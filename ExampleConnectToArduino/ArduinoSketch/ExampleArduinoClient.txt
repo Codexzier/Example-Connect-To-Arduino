@@ -1,0 +1,82 @@
+﻿// Example code for connect a pc to an arduino with ethernet shield.
+
+
+#include <SPI.h>
+#include <Ethernet.h>
+
+// random mac adress
+byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x91, 0x8C }; 
+
+// set the client IP Adress
+byte ip[] = {192,168,20,99};
+
+// set the server adresse 
+//(ip adress of your open console application)
+byte serverip[] = {192,168,20,69};
+
+// network class for connecting to the server
+EthernetClient client;
+
+// set the LED pin to show an effect 
+// of received command from pc.
+int ledPin = 2;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Ethernet.begin(mac, ip);
+  Serial.begin(115200);
+  tryConnectToServer();
+}
+
+void loop() {
+
+  // get any received from pc.
+  if(client.available()) {
+    char c = client.read(); 
+
+    if(c == 'a') {
+      Serial.println("ON");
+      digitalWrite(ledPin, true);
+    }
+    else if(c == 'b') {
+      Serial.println("OFF");
+      digitalWrite(ledPin, false);
+    }
+    
+    Serial.println(c);
+  }
+
+  checkForReconnect();
+}
+
+// if disconnected, so after it try to reconnect to server.
+void checkForReconnect() {
+  if(!client.connected()) {
+    Serial.println("disconnecting");
+    client.stop();
+
+    delay(1000);
+    tryConnectToServer();
+  }
+}
+
+void tryConnectToServer() {
+
+  Serial.println("connecting...");
+  bool runTryToConnect = true;
+
+  while(runTryToConnect) {
+    
+    if(client.connect(serverip, 1200)) {
+      Serial.println("Connected");
+
+      // end the setup
+      runTryToConnect = false;
+    }
+    else {
+      Serial.println("wait...");
+      delay(1000);
+      Serial.println("try to connect again...");
+    }
+  }
+}
