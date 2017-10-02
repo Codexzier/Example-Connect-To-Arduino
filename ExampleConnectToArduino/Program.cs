@@ -11,7 +11,6 @@ namespace ExampleConnectToArduino
         static void Main(string[] args)
         {
             NetworkHost host = new NetworkHost(1200);
-            host.Start();
 
             bool run = true;
             while (run)
