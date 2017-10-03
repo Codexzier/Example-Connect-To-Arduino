@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace ExampleConnectToArduino
 {
@@ -21,7 +20,7 @@ namespace ExampleConnectToArduino
 
             this._connection = socket.Accept();
         }
-        
+
         /// <summary>
         /// Send a command to 
         /// </summary>

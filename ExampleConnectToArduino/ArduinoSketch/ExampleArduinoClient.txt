@@ -4,7 +4,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 
-// random mac adress
+// random mac address
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x91, 0x8C }; 
 
 // set the client IP Adress
